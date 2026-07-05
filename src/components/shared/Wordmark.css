@@ -1,5 +1,5 @@
 .wordmark {
-  font-family: 'UnifrakturMaguntia', cursive;
+  font-family: var(--font-mono);
   color: var(--text);
   line-height: 1;
   white-space: nowrap;

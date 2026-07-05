@@ -1,5 +1,5 @@
 .eyebrow {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 4px;
   color: var(--text-muted);

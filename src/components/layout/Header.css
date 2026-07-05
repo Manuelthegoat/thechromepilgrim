@@ -75,7 +75,6 @@
 
   .header__link {
     display: none;
-    /* hide LOGIN text on mobile, icon-only nav */
   }
 
   .header__side i {

@@ -5,6 +5,7 @@ import Gallery from './pages/Gallery';
 import Cart from './pages/Cart';
 import './App.css';
 import Info from './pages/Info';
+import Shop from './pages/Shop';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/info" element={<Info />} />
+          <Route path="/shop" element={<Shop />} />
         </Route>
       </Routes>
     </BrowserRouter>

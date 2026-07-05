@@ -19,8 +19,8 @@ function Home() {
   return (
     <>
       <Hero />
-      <Waypoints items={WAYPOINTS} activeIndex={1} />
-      <ProductGrid title="II. RELICS — NEW ARRIVALS" products={PRODUCTS} />
+      {/* <Waypoints items={WAYPOINTS} activeIndex={1} />
+      <ProductGrid title="II. RELICS — NEW ARRIVALS" products={PRODUCTS} /> */}
     </>
   );
 }

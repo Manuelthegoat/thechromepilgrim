@@ -10,13 +10,21 @@
   justify-content: center;
 }
 
+.footer__nav .nav-group__link {
+  font-size: 13px; /* was 10px, inherited from NavGroup */
+  letter-spacing: 1.5px;
+  font-weight: bold;
+}
+
 .footer__copyright {
   margin-top: 18px;
-  font-family: 'Cinzel', serif;
-  font-size: 9px;
+  font-family: var(--font-mono);
+  font-size: 12px; /* was 9px */
+  font-weight: bold;
   letter-spacing: 1px;
   color: var(--text-dim);
 }
+
 @media (max-width: 480px) {
   .footer {
     padding: 28px 16px 22px;
@@ -33,11 +41,11 @@
   }
 
   .footer__nav .nav-group__link {
-    font-size: 9px;
+    font-size: 11px; /* was 9px */
   }
 
   .footer__copyright {
     margin-top: 14px;
-    font-size: 8px;
+    font-size: 10px; /* was 8px */
   }
 }

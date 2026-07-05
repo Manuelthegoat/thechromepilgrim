@@ -20,7 +20,7 @@
 .hero__title {
   position: relative;
   font-family: 'UnifrakturMaguntia', cursive;
-  font-size: 52px;
+  font-size: 72px;
   color: var(--text);
   line-height: 1;
   font-weight: normal;
@@ -29,12 +29,13 @@
 .hero__title + .eyebrow {
   position: relative;
   margin-top: 16px;
+  font-size: 14px;
 }
 
 .hero__scroll {
   position: relative;
   margin-top: 36px;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 2px;
   color: var(--text-dim);
 }
@@ -49,11 +50,12 @@
   }
 
   .hero__title {
-    font-size: 30px;
+    font-size: 42px;
     line-height: 1.1;
   }
 
   .hero__scroll {
     margin-top: 24px;
+    font-size: 11px;
   }
 }

@@ -3,4 +3,5 @@
   font-size: 11px;
   letter-spacing: 4px;
   color: var(--text-muted);
+  font-weight: bold;
 }

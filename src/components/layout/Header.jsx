@@ -7,7 +7,7 @@ import logo from '../../assets/dvoblack.PNG';
 
 import './Header.css';
 
-function Header({ cartCount = 0 }) {
+function Header({ cartCount = 1 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -35,8 +35,8 @@ function Header({ cartCount = 0 }) {
         {menuOpen && <HelmetMenu onClose={() => setMenuOpen(false)} />}
       </div>
 
-      <Link to="/">
-  <img src={logo} alt="The Chrome Pilgrim" className="header__logo" />
+      <Link to="/" className="header__logo-link">
+        <img src={logo} alt="The Chrome Pilgrim" className="header__logo" />
       </Link>
 
       <div className="header__side header__side--right">

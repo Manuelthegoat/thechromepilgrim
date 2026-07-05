@@ -4,6 +4,13 @@
   justify-content: space-between;
   padding: 18px 26px;
   border-bottom: 0.5px solid var(--line);
+  position: relative;
+}
+.header__logo-link {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .header__side {
@@ -70,15 +77,16 @@
 }
 
 .header__helmet {
-  height: 50px;
+  height: clamp(20px, 4.5vw, 40px);
   width: auto;
   display: block;
-  opacity: 0.75;
+  opacity: 0.85;
 }
 
 .header__helmet:hover {
   opacity: 1;
 }
+
 .header__helmet-btn {
   background: none;
   border: none;
@@ -87,11 +95,13 @@
   display: flex;
   align-items: center;
 }
+
 .header__helmet-btn:hover .header__helmet {
   opacity: 1;
 }
+
 .header__logo {
-  height: 52px;
+  height: clamp(32px, 6vw, 52px);
   width: auto;
   display: block;
 }

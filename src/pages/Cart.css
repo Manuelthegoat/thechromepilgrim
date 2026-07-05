@@ -1,0 +1,11 @@
+.cart {
+  padding: 60px 26px;
+  text-align: center;
+}
+
+.cart__empty {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}

@@ -21,3 +21,20 @@
 .waypoints__item--active {
   color: var(--accent-brass);
 }
+@media (max-width: 480px) {
+  .waypoints {
+    gap: 18px;
+    padding: 14px 12px;
+  }
+
+  .waypoints__item {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 360px) {
+  .waypoints__item {
+    letter-spacing: 0.5px;
+  }
+}

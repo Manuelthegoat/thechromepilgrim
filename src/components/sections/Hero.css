@@ -38,3 +38,22 @@
   letter-spacing: 2px;
   color: var(--text-dim);
 }
+@media (max-width: 480px) {
+  .hero {
+    padding: 90px 16px 70px;
+    min-height: 70vh;
+  }
+
+  .hero__seal {
+    top: 24px;
+  }
+
+  .hero__title {
+    font-size: 30px;
+    line-height: 1.1;
+  }
+
+  .hero__scroll {
+    margin-top: 24px;
+  }
+}

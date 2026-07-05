@@ -17,3 +17,27 @@
   letter-spacing: 1px;
   color: #443f38;
 }
+@media (max-width: 480px) {
+  .footer {
+    padding: 28px 16px 22px;
+  }
+
+  .footer__nav {
+    margin-top: 10px;
+  }
+
+  .footer__nav .nav-group {
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer__nav .nav-group__link {
+    font-size: 9px;
+  }
+
+  .footer__copyright {
+    margin-top: 14px;
+    font-size: 8px;
+  }
+}

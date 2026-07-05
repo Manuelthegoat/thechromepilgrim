@@ -62,3 +62,23 @@
   min-width: 14px;
   text-align: center;
 }
+
+.header a {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 14px 16px;
+  }
+
+  .header__link {
+    display: none;
+    /* hide LOGIN text on mobile, icon-only nav */
+  }
+
+  .header__side i {
+    font-size: 15px;
+  }
+}

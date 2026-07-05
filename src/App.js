@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import Cart from './pages/Cart';
 import './App.css';
+import Info from './pages/Info';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/info" element={<Info />} />
         </Route>
       </Routes>
     </BrowserRouter>

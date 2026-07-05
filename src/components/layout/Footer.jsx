@@ -8,7 +8,7 @@ function Footer({ year = 2026, brand = 'THE CHROME PILGRIM' }) {
 
   return (
     <footer className="footer">
-      <WaxSeal size={isMobile ? 32 : 46} opacity={0.5} />
+      <WaxSeal size={isMobile ? 32 : 46} opacity={0.7} />
       <div className="footer__nav">
         <NavGroup links={['COLLECTION', 'ARCHIVE', 'CONTACT']} />
       </div>

@@ -1,0 +1,21 @@
+.info {
+  padding: 60px 26px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.info__block {
+  margin-bottom: 40px;
+}
+
+.info__block:last-child {
+  margin-bottom: 0;
+}
+
+.info__text {
+  margin-top: 14px;
+  font-size: 18px;
+  line-height: 1.8;
+  letter-spacing: 0.3px;
+  color: var(--text-muted);
+}

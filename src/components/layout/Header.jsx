@@ -1,18 +1,42 @@
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Wordmark from '../shared/Wordmark';
+import HelmetMenu from './HelmetMenu';
+import helmetIcon from '../../assets/logoblack.PNG';
+import logo from '../../assets/dvoblack.PNG';
+
 import './Header.css';
 
 function Header({ cartCount = 0 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <header className="header">
-      <div className="header__side header__side--left">
-        <Link to="/gallery" aria-label="Gallery">
-          <i className="ti ti-helmet" aria-hidden="true" />
-        </Link>
+      <div className="header__side header__side--left" ref={menuRef}>
+        <button
+          className="header__helmet-btn"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-label="Menu"
+          aria-expanded={menuOpen}
+        >
+          <img src={helmetIcon} alt="" className="header__helmet" />
+        </button>
+        {menuOpen && <HelmetMenu onClose={() => setMenuOpen(false)} />}
       </div>
 
       <Link to="/">
-        <Wordmark size="sm" />
+  <img src={logo} alt="The Chrome Pilgrim" className="header__logo" />
       </Link>
 
       <div className="header__side header__side--right">

@@ -9,7 +9,7 @@ function Hero({ title = 'The Chrome Pilgrim', tagline = 'AN ORDER OF CLOTH AND C
   return (
     <section className="hero">
       <div className="hero__seal">
-        <WaxSeal size={isMobile ? 80 : 130} opacity={0.14} />
+        <WaxSeal size={isMobile ? 80 : 130} opacity={0.35} />
       </div>
       <h1 className="hero__title">{title}</h1>
       <Eyebrow>{tagline}</Eyebrow>

@@ -1,13 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=UnifrakturMaguntia&family=Oswald:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
 :root {
-  --bg: #0c0b09;
-  --panel: #151310;
-  --line: #34302a;
-  --text: #e8e2d3;
-  --text-muted: #8c8577;
-  --text-dim: #5c584e;
-  --accent-brass: #a08a54;
+  --bg: #f7f5f0;
+  --panel: #ffffff;
+  --line: #ddd9cd;
+  --text: #14130f;
+  --text-muted: #6b685f;
+  --text-dim: #9a978c;
+  --accent-brass: #8a7238;
+  --font-mono: 'Courier Prime', monospace;
 }
 
 * {
@@ -18,6 +20,21 @@
 
 body {
   background: var(--bg);
+  background-image: url('./assets/bg2.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
   color: var(--text);
-  font-family: 'Oswald', sans-serif;
+  font-family: var(--font-mono);
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

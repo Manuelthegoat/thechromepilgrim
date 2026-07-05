@@ -15,6 +15,7 @@
 
 .header__side--left {
   justify-content: flex-start;
+  position: relative;
 }
 
 .header__side--right {
@@ -66,6 +67,33 @@
 .header a {
   text-decoration: none;
   color: inherit;
+}
+
+.header__helmet {
+  height: 50px;
+  width: auto;
+  display: block;
+  opacity: 0.75;
+}
+
+.header__helmet:hover {
+  opacity: 1;
+}
+.header__helmet-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.header__helmet-btn:hover .header__helmet {
+  opacity: 1;
+}
+.header__logo {
+  height: 52px;
+  width: auto;
+  display: block;
 }
 
 @media (max-width: 480px) {

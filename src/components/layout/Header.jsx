@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Wordmark from '../shared/Wordmark';
+// import Wordmark from '../shared/Wordmark';
 import HelmetMenu from './HelmetMenu';
 import helmetIcon from '../../assets/logoblack.PNG';
 import logo from '../../assets/dvoblack.PNG';

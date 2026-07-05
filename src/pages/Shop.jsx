@@ -1,9 +1,9 @@
-import ShopHero from '../components/sections/ShopHero';
+// import ShopHero from '../components/sections/ShopHero';
 import ProductGrid from '../components/sections/ProductGrid';
 
 import whiteTCP from '../assets/whiteTCP.png';
 import retro from '../assets/retro.png';
-import retrofront from '../assets/retro-front.png';
+// import retrofront from '../assets/retro-front.png';
 import blackTCP from '../assets/blackTCP.png';
 
 const PRODUCTS = [

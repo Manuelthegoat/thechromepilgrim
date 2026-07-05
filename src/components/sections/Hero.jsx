@@ -1,10 +1,10 @@
-import WaxSeal from '../shared/WaxSeal';
+// import WaxSeal from '../shared/WaxSeal';
 import Eyebrow from '../shared/Eyebrow';
-import useIsMobile from '../../hooks/useIsMobile';
+// import useIsMobile from '../../hooks/useIsMobile';
 import './Hero.css';
 
 function Hero({ title = 'The Chrome Pilgrim', tagline = 'AN ORDER OF CLOTH AND CHAIN' }) {
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   return (
     <section className="hero">

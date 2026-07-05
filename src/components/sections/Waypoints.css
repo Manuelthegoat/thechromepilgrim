@@ -1,0 +1,23 @@
+.waypoints {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  padding: 20px 20px;
+  border-bottom: 0.5px solid var(--line);
+  font-family: 'Cinzel', serif;
+}
+
+.waypoints__item {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.waypoints__item:hover {
+  color: var(--text-muted);
+}
+
+.waypoints__item--active {
+  color: var(--accent-brass);
+}

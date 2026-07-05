@@ -1,0 +1,22 @@
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-group__link {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.nav-group__link:hover {
+  color: var(--text);
+}
+
+.nav-group__icon {
+  font-size: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+}

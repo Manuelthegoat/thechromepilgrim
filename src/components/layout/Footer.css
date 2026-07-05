@@ -1,0 +1,19 @@
+.footer {
+  text-align: center;
+  padding: 40px 20px 30px;
+  border-top: 0.5px solid var(--line);
+}
+
+.footer__nav {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer__copyright {
+  margin-top: 18px;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #443f38;
+}

@@ -1,0 +1,35 @@
+.hero {
+  position: relative;
+  padding: 70px 20px 60px;
+  text-align: center;
+  border-bottom: 0.5px solid var(--line);
+}
+
+.hero__seal {
+  position: absolute;
+  top: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero__title {
+  position: relative;
+  font-family: 'UnifrakturMaguntia', cursive;
+  font-size: 52px;
+  color: var(--text);
+  line-height: 1;
+  font-weight: normal;
+}
+
+.hero__title + .eyebrow {
+  position: relative;
+  margin-top: 16px;
+}
+
+.hero__scroll {
+  position: relative;
+  margin-top: 36px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+}

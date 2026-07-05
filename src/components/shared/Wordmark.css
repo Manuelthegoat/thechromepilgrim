@@ -1,0 +1,14 @@
+.wordmark {
+  font-family: 'UnifrakturMaguntia', cursive;
+  color: var(--text);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.wordmark--lg {
+  font-size: 52px;
+}
+
+.wordmark--sm {
+  font-size: 20px;
+}

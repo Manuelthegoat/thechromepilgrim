@@ -85,7 +85,7 @@ function ProductDetail() {
         </div>
 
         <button className="product-detail__add-btn" disabled={!selectedSize}>
-          {selectedSize ? "Add to cart" : "Select a size"}
+          {selectedSize ? "Add to Bag" : "Select a size"}
         </button>
       </div>
     </section>

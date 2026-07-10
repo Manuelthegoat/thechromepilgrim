@@ -15,7 +15,7 @@ function Footer({ year = 2026, brand = "THE CHROME PILGRIM" }) {
             {
               label: "CONTACT",
               href: "/contact",
-              icon: "fa fa-envelope",
+              icon: "fa fa-envelope-o",
             },
             {
               label: "INSTAGRAM",

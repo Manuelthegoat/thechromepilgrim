@@ -54,7 +54,17 @@
 .header__link:hover {
   color: var(--text);
 }
+.header__cart-icon {
+  height: 22px; /* adjust as needed */
+  width: auto;
+  display: block;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
 
+.header__cart:hover .header__cart-icon {
+  opacity: 1;
+}
 .header__cart {
   position: relative;
   display: flex;

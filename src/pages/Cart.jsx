@@ -4,7 +4,7 @@ import './Cart.css';
 function Cart() {
   return (
     <section className="cart">
-      <Eyebrow>YOUR CART</Eyebrow>
+      <Eyebrow>YOUR BAG</Eyebrow>
       <p className="cart__empty">NOTHINGNESS.</p>
     </section>
   );

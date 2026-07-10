@@ -14,7 +14,7 @@ function ProductCard({ id, plateNumber, name, price, images }) {
         )}
       </div>
       <div className="product-card__name">{name}</div>
-      <div className="product-card__price">₦{price}</div>
+      {/* <div className="product-card__price">₦{price}</div> */}
     </Link>
   );
 }

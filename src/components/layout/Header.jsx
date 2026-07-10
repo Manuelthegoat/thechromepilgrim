@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import HelmetMenu from "./HelmetMenu";
 import helmetIcon from "../../assets/logoblack.PNG";
 import logo from "../../assets/homepage/titleblack.PNG";
+import cartIcon from "../../assets/bag.png";
 
 import "./Header.css";
 
@@ -48,7 +49,7 @@ function Header({ cartCount = 0 }) {
       <div className="header__side header__side--right">
         <span className="header__link">LOGIN</span>
         <Link to="/cart" className="header__cart" aria-label="Cart">
-        <span>Bag</span>  <i className="fa fa-shopping-cart" aria-hidden="true" />
+          <img src={cartIcon} alt="Cart" className="header__cart-icon" />
           {cartCount > 0 && (
             <span className="header__cart-count">{cartCount}</span>
           )}

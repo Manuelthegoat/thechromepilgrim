@@ -1,21 +1,20 @@
+import { Link } from 'react-router-dom';
 import Eyebrow from '../components/shared/Eyebrow';
+import { GALLERY_ITEMS } from '../data/gallery';
 import './Gallery.css';
 
-const PLACEHOLDER_COUNT = 9;
-
 function Gallery() {
-  const plates = Array.from({ length: PLACEHOLDER_COUNT }, (_, i) =>
-    String(i + 1).padStart(2, '0')
-  );
-
   return (
     <section className="gallery">
-      <Eyebrow>THE GALLERY</Eyebrow>
+      <Eyebrow>THE ARCHIVES</Eyebrow>
       <div className="gallery__grid">
-        {plates.map((plate) => (
-          <div key={plate} className="gallery__plate">
-            <span className="gallery__plate-label">PLATE {plate}</span>
-          </div>
+        {GALLERY_ITEMS.map((item) => (
+          <Link key={item.id} to={`/gallery/${item.id}`} className="gallery__item">
+            <div className="gallery__image-wrap">
+              <img src={item.image} alt={item.title} className="gallery__image" />
+            </div>
+            <div className="gallery__title">{item.title}</div>
+          </Link>
         ))}
       </div>
     </section>

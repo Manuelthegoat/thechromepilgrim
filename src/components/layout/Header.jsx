@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 // import Wordmark from '../shared/Wordmark';
-import HelmetMenu from './HelmetMenu';
-import helmetIcon from '../../assets/logoblack.PNG';
-import logo from '../../assets/dvoblack.PNG';
+import HelmetMenu from "./HelmetMenu";
+import helmetIcon from "../../assets/logoblack.PNG";
+import logo from "../../assets/homepage/titleblack.PNG";
 
-import './Header.css';
+import "./Header.css";
 
 function Header({ cartCount = 1 }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,9 +17,15 @@ function Header({ cartCount = 1 }) {
         setMenuOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
     <header className="header">
@@ -43,7 +49,9 @@ function Header({ cartCount = 1 }) {
         <span className="header__link">LOGIN</span>
         <Link to="/cart" className="header__cart" aria-label="Cart">
           <i className="ti ti-shopping-bag" aria-hidden="true" />
-          {cartCount > 0 && <span className="header__cart-count">{cartCount}</span>}
+          {cartCount > 0 && (
+            <span className="header__cart-count">{cartCount}</span>
+          )}
         </Link>
       </div>
     </header>

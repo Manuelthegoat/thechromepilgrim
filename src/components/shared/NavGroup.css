@@ -7,16 +7,23 @@
 .nav-group__link {
   font-size: 10px;
   letter-spacing: 1.5px;
-  color: var(--text-muted);
+  color: inherit;
+  text-decoration: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .nav-group__link:hover {
-  color: var(--text);
+  opacity: 0.7;
 }
 
 .nav-group__icon {
   font-size: 14px;
   color: var(--text-muted);
   cursor: pointer;
+}
+.nav-group__icon {
+  font-size: 15px;
 }

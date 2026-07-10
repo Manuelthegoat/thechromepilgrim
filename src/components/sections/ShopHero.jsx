@@ -1,4 +1,4 @@
-import shopBanner from '../../assets/TCP.JPG';
+import shopBanner from '../../assets/chromePilgrimPage/photo2.PNG';
 import './ShopHero.css';
 
 function ShopHero() {

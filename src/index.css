@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=UnifrakturMaguntia&family=Oswald:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
-
+@font-face {
+  font-family: 'TitleFont';
+  src: url('./assets/homepage/CitySlicker\(for\ title\).ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 :root {
   --bg: #f7f5f0;
   --panel: #ffffff;
@@ -30,7 +35,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-image: url('./assets/bg.JPG');
+  background-image: url('./assets/homepage/Home\ wallpaper\ 2.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -42,6 +47,6 @@ body::after {
   inset: 0;
   z-index: -1;
   background-color: var(--bg);
-  opacity: 0.3; /* tune this — higher = more scrim, less visible texture */
+  opacity: 0.1; /* tune this — higher = more scrim, less visible texture */
   pointer-events: none;
 }

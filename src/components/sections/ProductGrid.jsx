@@ -8,7 +8,7 @@ function ProductGrid({ title, products = [] }) {
       <Eyebrow>{title}</Eyebrow>
       <div className="product-grid__items">
         {products.map((product) => (
-          <ProductCard key={product.plateNumber} {...product} />
+          <ProductCard key={product.id} {...product} />
         ))}
       </div>
     </section>

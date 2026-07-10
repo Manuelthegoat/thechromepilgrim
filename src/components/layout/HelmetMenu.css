@@ -14,7 +14,8 @@
 
 .helmet-menu__item {
   padding: 9px 18px;
-  font-size: 11px;
+  font-size: 14px;
+  font-weight: bold;
   letter-spacing: 1px;
   color: var(--text-muted);
   text-decoration: none;
@@ -23,4 +24,47 @@
 .helmet-menu__item:hover {
   color: var(--text);
   background: var(--bg);
+}
+
+.helmet-menu__close {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .helmet-menu {
+    position: fixed;
+    inset: 0;
+    margin-top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg);
+    border: none;
+    padding: 0;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .helmet-menu__item {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    text-align: center;
+    padding: 0;
+  }
+
+  .helmet-menu__close {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: var(--text);
+    cursor: pointer;
+  }
 }

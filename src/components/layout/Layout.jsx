@@ -1,12 +1,18 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
+import './Layout.css';
 
 function Layout() {
+  const { pathname } = useLocation();
+  const isHome = pathname === '/';
+
   return (
     <>
       <Header />
-      <Outlet />
+      <div className={isHome ? '' : 'page-white'}>
+        <Outlet />
+      </div>
       <Footer />
     </>
   );

@@ -1,13 +1,24 @@
 import './NavGroup.css';
 
-function NavGroup({ links = [], icons = [], align = 'left' }) {
+function NavGroup({ links = [], align = 'left' }) {
   return (
     <div className={`nav-group nav-group--${align}`}>
       {links.map((link) => (
-        <span key={link} className="nav-group__link">{link}</span>
-      ))}
-      {icons.map((icon) => (
-        <i key={icon} className={`ti ti-${icon} nav-group__icon`} aria-hidden="true" />
+        <a
+          key={link.label}
+          href={link.href}
+          className="nav-group__link"
+          target={link.external ? "_blank" : "_self"}
+          rel={link.external ? "noopener noreferrer" : undefined}
+        >
+          {link.label}
+          {link.icon && (
+            <i
+              className={`fab fa-${link.icon} nav-group__icon`}
+              aria-hidden="true"
+            />
+          )}
+        </a>
       ))}
     </div>
   );

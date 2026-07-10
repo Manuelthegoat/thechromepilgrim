@@ -1,10 +1,15 @@
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 18px 26px;
-  border-bottom: 0.5px solid var(--line);
-  position: relative;
+  background: transparent;
+  border-bottom: none;
 }
 .header__logo-link {
   position: absolute;

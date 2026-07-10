@@ -75,23 +75,6 @@ npm run dev
 
 ---
 
-## 📸 Screenshots
-
-Add screenshots of your application here.
-
-```text
-/screenshots/home.png
-/screenshots/product.png
-/screenshots/cart.png
-```
-
-Example:
-
-| Home | Product |
-|------|---------|
-| ![](screenshots/home.png) | ![](screenshots/product.png) |
-
----
 
 ## 🌐 Live Demo
 
@@ -110,9 +93,6 @@ The website embraces the dark, industrial, and futuristic aesthetic of **The Chr
 ## 📌 Roadmap
 
 - [ ] User authentication
-- [ ] Wishlist
-- [ ] Product search
-- [ ] Product filtering
 - [ ] Secure checkout
 - [ ] Payment integration
 - [ ] Order history
@@ -122,36 +102,9 @@ The website embraces the dark, industrial, and futuristic aesthetic of **The Chr
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome.
-
-1. Fork the project
-2. Create your feature branch
-
-```bash
-git checkout -b feature/AmazingFeature
-```
-
-3. Commit your changes
-
-```bash
-git commit -m "Add AmazingFeature"
-```
-
-4. Push to the branch
-
-```bash
-git push origin feature/AmazingFeature
-```
-
-5. Open a Pull Request
-
----
-
 ## 📄 License
 
-This project is provided for educational and portfolio purposes.
+This project is provided for the Chrome Pilgrim. All Rights Reserved.
 
 ---
 

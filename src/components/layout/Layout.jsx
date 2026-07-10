@@ -12,8 +12,8 @@ function Layout() {
       <Header />
       <div className={isHome ? '' : 'page-white'}>
         <Outlet />
-      </div>
       <Footer />
+      </div>
     </>
   );
 }

@@ -14,7 +14,7 @@ function NavGroup({ links = [], align = 'left' }) {
           {link.label}
           {link.icon && (
             <i
-              className={`fab fa-${link.icon} nav-group__icon`}
+              className={`${link.icon} nav-group__icon`}
               aria-hidden="true"
             />
           )}

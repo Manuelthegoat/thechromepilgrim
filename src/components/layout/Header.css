@@ -61,7 +61,9 @@
   align-items: center;
   cursor: pointer;
 }
-
+.header__cart span{
+  font-size: 12px;
+}
 .header__cart-count {
   position: absolute;
   top: -6px;
@@ -122,5 +124,8 @@
 
   .header__side i {
     font-size: 15px;
+  }
+  .header__logo {
+    height: clamp(44px, 12vw, 60px);
   }
 }

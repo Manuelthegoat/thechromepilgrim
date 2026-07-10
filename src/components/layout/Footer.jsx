@@ -1,25 +1,26 @@
-import WaxSeal from "../shared/WaxSeal";
+// import WaxSeal from "../shared/WaxSeal";
 import NavGroup from "../shared/NavGroup";
-import useIsMobile from "../../hooks/useIsMobile";
+// import useIsMobile from "../../hooks/useIsMobile";
 import "./Footer.css";
 
 function Footer({ year = 2026, brand = "THE CHROME PILGRIM" }) {
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   return (
     <footer className="footer">
-      <WaxSeal size={isMobile ? 32 : 46} opacity={0.7} />
+      {/* <WaxSeal size={isMobile ? 32 : 46} opacity={0.7} /> */}
       <div className="footer__nav">
         <NavGroup
           links={[
             {
               label: "CONTACT",
               href: "/contact",
+              icon: "fa fa-envelope",
             },
             {
               label: "INSTAGRAM",
               href: "https://instagram.com/danisveryown",
-              icon: "instagram",
+              icon: "fab fa-instagram",
               external: true,
             },
           ]}

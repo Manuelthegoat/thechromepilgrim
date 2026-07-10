@@ -7,7 +7,7 @@ import logo from "../../assets/homepage/titleblack.PNG";
 
 import "./Header.css";
 
-function Header({ cartCount = 1 }) {
+function Header({ cartCount = 0 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -48,7 +48,7 @@ function Header({ cartCount = 1 }) {
       <div className="header__side header__side--right">
         <span className="header__link">LOGIN</span>
         <Link to="/cart" className="header__cart" aria-label="Cart">
-          <i className="ti ti-shopping-bag" aria-hidden="true" />
+        <span>Bag</span>  <i className="fa fa-shopping-cart" aria-hidden="true" />
           {cartCount > 0 && (
             <span className="header__cart-count">{cartCount}</span>
           )}

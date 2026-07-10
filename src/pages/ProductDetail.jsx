@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PRODUCTS } from '../data/products';
 import './ProductDetail.css';
@@ -19,20 +19,22 @@ function ProductDetail() {
 
   const images = product?.images || [];
 
-  function goToPrev() {
-    setActiveImage((i) => (i === 0 ? images.length - 1 : i - 1));
-  }
+const goToPrev = useCallback(() => {
+  setActiveImage((i) => (i === 0 ? images.length - 1 : i - 1));
+}, [images.length]);
 
-  function goToNext() {
-    setActiveImage((i) => (i === images.length - 1 ? 0 : i + 1));
-  }
+const goToNext = useCallback(() => {
+  setActiveImage((i) => (i === images.length - 1 ? 0 : i + 1));
+}, [images.length]);
 
   // Autoplay
-  useEffect(() => {
-    if (images.length <= 1 || isPaused) return;
-    const timer = setInterval(goToNext, AUTOPLAY_DELAY);
-    return () => clearInterval(timer);
-  }, [images.length, isPaused, activeImage]);
+ useEffect(() => {
+  if (images.length <= 1 || isPaused) return;
+
+  const timer = setInterval(goToNext, AUTOPLAY_DELAY);
+
+  return () => clearInterval(timer);
+}, [images.length, isPaused, goToNext]);
 
   // Touch swipe (mobile)
   function handleTouchStart(e) {

@@ -8,7 +8,7 @@ import blackTCP4 from '../assets/chromePilgrimPage/Black shirt/black2.JPG';
 export const PRODUCTS = [
   {
     id: 'sleeves-white',
-    plateNumber: '02',
+    plateNumber: '01',
     name: 'The Chrome Pilgrim Sleeves (White)',
     price: '35,000',
     images: [whiteTCP2, whiteTCP3, whiteTCP4],
@@ -16,7 +16,7 @@ export const PRODUCTS = [
   },
   {
     id: 'sleeves-black',
-    plateNumber: '03',
+    plateNumber: '02',
     name: 'The Chrome Pilgrim Sleeves (Black)',
     price: '35,000',
     images: [blackTCP2, blackTCP3, blackTCP4],

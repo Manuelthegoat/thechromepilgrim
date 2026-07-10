@@ -13,7 +13,7 @@ export const GALLERY_ITEMS = [
   },
   {
     id: 'piece-02',
-    title: 'Untitled II',
+    title: 'THE HUMAN',
     image: piece02,
     year: '2025',
     medium: 'Mixed media on canvas',
@@ -21,7 +21,7 @@ export const GALLERY_ITEMS = [
   },
   {
     id: 'piece-03',
-    title: 'Untitled III',
+    title: 'THE ANIMAL',
     image: piece03,
     year: '2025',
     medium: 'Mixed media on canvas',

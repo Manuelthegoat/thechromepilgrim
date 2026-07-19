@@ -8,7 +8,7 @@ function Cart() {
   if (items.length === 0) {
     return (
       <section className="cart">
-        <Eyebrow>YOUR CART</Eyebrow>
+        <Eyebrow>YOUR BAG</Eyebrow>
         <p className="cart__empty">NOTHINGNESS.</p>
         <Link to="/shop" className="cart__continue">
           Continue browsing
@@ -18,7 +18,7 @@ function Cart() {
   }
   return (
     <section className="cart">
-      <Eyebrow>YOUR CART</Eyebrow>
+      <Eyebrow>YOUR BAG</Eyebrow>
 
       <div className="cart__items">
         {items.map((item) => (

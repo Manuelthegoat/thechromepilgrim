@@ -1,0 +1,27 @@
+.admin-overview h1 {
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.admin-overview__stats {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-overview__card {
+  border: 1px solid #e2e2e2;
+  padding: 20px;
+  min-width: 160px;
+}
+
+.admin-overview__label {
+  font-size: 11px;
+  color: #888;
+}
+
+.admin-overview__value {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: bold;
+}

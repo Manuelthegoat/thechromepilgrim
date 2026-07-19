@@ -136,3 +136,18 @@
 .product-detail__media:active {
   cursor: grabbing;
 }
+.product-detail__size-btn--soldout {
+  opacity: 0.35;
+  cursor: not-allowed;
+  position: relative;
+}
+
+.product-detail__soldout-label {
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  white-space: nowrap;
+  color: var(--text-dim);
+}

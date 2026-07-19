@@ -1,12 +1,124 @@
-.cart {
-  padding: 120px 26px;
-  text-align: center;
-}
-
 .cart__empty {
   margin-top: 16px;
   font-size: 35px;
   color: var(--text-muted);
   letter-spacing: 0.5px;
   font-weight: bold;
+}
+.cart {
+  padding: 100px 26px 60px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+.cart__continue {
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.cart__continue:hover {
+  color: var(--text);
+}
+
+.cart__items {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.cart__item {
+  display: flex;
+  gap: 20px;
+  text-align: left;
+  border-bottom: 0.5px solid var(--line);
+  padding-bottom: 24px;
+}
+
+.cart__item-img {
+  width: 90px;
+  height: auto;
+  display: block;
+}
+
+.cart__item-details {
+  flex: 1;
+}
+
+.cart__item-name {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.cart__item-size {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.cart__item-price {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.cart__item-qty {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.cart__item-qty button {
+  width: 26px;
+  height: 26px;
+  border: 0.5px solid var(--line);
+  background: none;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.cart__item-remove {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.cart__item-remove:hover {
+  color: var(--text);
+}
+
+.cart__total {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: bold;
+  border-top: 0.5px solid var(--line);
+  padding-top: 20px;
+}
+
+.cart__checkout-btn {
+  display: block;
+  margin-top: 24px;
+  background: var(--text);
+  color: var(--bg);
+  padding: 14px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-decoration: none;
 }

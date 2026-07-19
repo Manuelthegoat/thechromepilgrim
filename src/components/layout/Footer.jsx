@@ -3,7 +3,7 @@ import NavGroup from "../shared/NavGroup";
 // import useIsMobile from "../../hooks/useIsMobile";
 import "./Footer.css";
 
-function Footer({ year = 2026, brand = "THE CHROME PILGRIM" }) {
+function Footer({ year = 2026, brand = "DANI'S VERY OWN" }) {
   // const isMobile = useIsMobile();
 
   return (

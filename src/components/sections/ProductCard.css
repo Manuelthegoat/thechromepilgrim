@@ -70,3 +70,15 @@
   margin-top: 2px;
   font-weight: bold;
 }
+.product-card__soldout-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border: 0.5px solid var(--line);
+}

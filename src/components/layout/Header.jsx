@@ -5,12 +5,14 @@ import HelmetMenu from "./HelmetMenu";
 import helmetIcon from "../../assets/logoblack.PNG";
 import logo from "../../assets/homepage/titleblack.PNG";
 import cartIcon from "../../assets/bag.png";
+import { useCart } from "../../context/CartContext";
 
 import "./Header.css";
 
-function Header({ cartCount = 0 }) {
+function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const { cartCount } = useCart();
 
   useEffect(() => {
     function handleClickOutside(e) {

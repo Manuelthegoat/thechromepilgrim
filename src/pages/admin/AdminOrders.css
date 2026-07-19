@@ -1,0 +1,41 @@
+.admin-orders h1 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.admin-orders {
+  overflow-x: auto;
+}
+.admin-orders__table {
+  width: 100%;
+  min-width: 640px; /* forces scroll instead of crushing columns unreadable */
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.admin-orders__table th,
+.admin-orders__table td {
+  border-bottom: 1px solid #eee;
+  padding: 10px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.admin-orders__sub {
+  color: #888;
+  font-size: 10px;
+}
+
+.admin-orders__item-line {
+  font-size: 11px;
+}
+
+.admin-orders__ref {
+  font-size: 10px;
+  color: #888;
+}
+
+.admin-orders__table select {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px;
+}

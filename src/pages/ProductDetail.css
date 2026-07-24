@@ -151,3 +151,8 @@
   white-space: nowrap;
   color: var(--text-dim);
 }
+.product-detail__add-btn:disabled {
+  background: var(--line);
+  color: var(--text-dim);
+  cursor: not-allowed;
+}

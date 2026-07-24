@@ -78,6 +78,9 @@ function ProductDetail() {
   }
 
   const { name, price, sizes } = product;
+  const isProductSoldOut = product.stock
+    ? Object.values(product.stock).every((qty) => qty <= 0)
+    : false;
 
   return (
     <section className="product-detail">
@@ -156,10 +159,14 @@ function ProductDetail() {
 
         <button
           className="product-detail__add-btn"
-          disabled={!selectedSize}
+          disabled={!selectedSize || isProductSoldOut}
           onClick={() => addItem(product, selectedSize, quantity)}
         >
-          {selectedSize ? "Acquire" : "Select a size"}
+          {isProductSoldOut
+            ? "Sold out"
+            : selectedSize
+              ? "Acquire"
+              : "Select a size"}
         </button>
         <Accordion items={ACCORDION_ITEMS} />
       </div>

@@ -4,9 +4,34 @@ import { supabase } from "../lib/supabaseClient";
 import { useCart } from "../context/CartContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
+import Accordion from "../components/shared/Accordion";
 import "./ProductDetail.css";
 import "swiper/css";
 import "swiper/css/pagination";
+
+const ACCORDION_ITEMS = [
+  {
+    title: "Delivery information",
+    content: (
+      <p>
+        All pre-orders are processed within 5-10 business days before they are
+        sent out for delivery. Please confirm the delivery information for each
+        item by reading its description. To ensure smooth communication, please
+        provide a valid email and phone number when placing your order. Note
+        that import duties may apply for customers in certain regions. For more
+        info, refer to our shipping policy.
+      </p>
+    ),
+  },
+  {
+    title: "Product description",
+    content: <p>A description of this piece goes here.</p>,
+  },
+  {
+    title: "Size guide",
+    content: <p>Size guide details go here.</p>,
+  },
+];
 
 function ProductDetail() {
   const { id } = useParams();
@@ -134,8 +159,9 @@ function ProductDetail() {
           disabled={!selectedSize}
           onClick={() => addItem(product, selectedSize, quantity)}
         >
-          {selectedSize ? "Add to Bag" : "Select a size"}
+          {selectedSize ? "Acquire" : "Select a size"}
         </button>
+        <Accordion items={ACCORDION_ITEMS} />
       </div>
     </section>
   );

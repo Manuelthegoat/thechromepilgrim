@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabaseClient';
-import './AdminOrders.css';
+import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import "./AdminOrders.css";
 
-const STATUSES = ['pending', 'packed', 'shipped', 'delivered', 'cancelled'];
+const STATUSES = ["pending", "packed", "shipped", "delivered", "cancelled"];
 
 function AdminOrders() {
   const [orders, setOrders] = useState([]);
@@ -14,16 +14,18 @@ function AdminOrders() {
 
   async function fetchOrders() {
     const { data, error } = await supabase
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .from("orders")
+      .select("*")
+      .order("created_at", { ascending: false });
     if (!error) setOrders(data);
     setLoading(false);
   }
 
   async function updateStatus(id, status) {
-    await supabase.from('orders').update({ status }).eq('id', id);
-    setOrders((current) => current.map((o) => (o.id === id ? { ...o, status } : o)));
+    await supabase.from("orders").update({ status }).eq("id", id);
+    setOrders((current) =>
+      current.map((o) => (o.id === id ? { ...o, status } : o)),
+    );
   }
 
   if (loading) return <p>Loading…</p>;
@@ -50,6 +52,9 @@ function AdminOrders() {
                 {order.customer_name}
                 <div className="admin-orders__sub">{order.customer_email}</div>
                 <div className="admin-orders__sub">{order.customer_phone}</div>
+                {order.notes && (
+                  <div className="admin-orders__sub">Note: {order.notes}</div>
+                )}
               </td>
               <td>
                 {order.items?.map((item, i) => (
@@ -60,9 +65,14 @@ function AdminOrders() {
               </td>
               <td>₦{Number(order.total).toLocaleString()}</td>
               <td>
-                <select value={order.status} onChange={(e) => updateStatus(order.id, e.target.value)}>
+                <select
+                  value={order.status}
+                  onChange={(e) => updateStatus(order.id, e.target.value)}
+                >
                   {STATUSES.map((s) => (
-                    <option key={s} value={s}>{s}</option>
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
                   ))}
                 </select>
               </td>

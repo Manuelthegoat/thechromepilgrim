@@ -1,19 +1,20 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import { supabase } from '../lib/supabaseClient';
-import Eyebrow from '../components/shared/Eyebrow';
-import './Checkout.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import { supabase } from "../lib/supabaseClient";
+import Eyebrow from "../components/shared/Eyebrow";
+import "./Checkout.css";
 
 function Checkout() {
   const { items, cartTotal, clearCart } = useCart();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    notes: "",
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
@@ -23,7 +24,7 @@ function Checkout() {
   }
 
   function isFormValid() {
-    return form.name && form.email && form.phone && form.address;
+    return form.name && form.email && form.phone && form.address; // notes intentionally excluded
   }
 
   function handlePayment(e) {
@@ -37,11 +38,15 @@ function Checkout() {
       key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
       email: form.email,
       amount: cartTotal * 100, // Paystack expects the amount in kobo
-      currency: 'NGN',
+      currency: "NGN",
       metadata: {
         custom_fields: [
-          { display_name: 'Customer Name', variable_name: 'customer_name', value: form.name },
-          { display_name: 'Phone', variable_name: 'phone', value: form.phone },
+          {
+            display_name: "Customer Name",
+            variable_name: "customer_name",
+            value: form.name,
+          },
+          { display_name: "Phone", variable_name: "phone", value: form.phone },
         ],
       },
       callback: (response) => {
@@ -55,37 +60,45 @@ function Checkout() {
     handler.openIframe();
   }
 
-async function saveOrder(reference) {
-  const { error: insertError } = await supabase.from('orders').insert({
-    customer_name: form.name,
-    customer_email: form.email,
-    customer_phone: form.phone,
-    shipping_address: form.address,
-    items: items,
-    total: cartTotal,
-    paystack_reference: reference,
-    status: 'pending',
-  });
-
-  if (insertError) {
-    setIsProcessing(false);
-    setError('Payment succeeded, but saving your order failed. Please contact us with reference: ' + reference);
-    return;
-  }
-
-  // Decrement stock for each purchased item/size
-  for (const item of items) {
-    await supabase.rpc('decrement_stock', {
-      p_product_id: item.id,
-      p_size: item.size,
-      p_qty: item.quantity,
+  async function saveOrder(reference) {
+    const { error: insertError } = await supabase.from("orders").insert({
+      customer_name: form.name,
+      customer_email: form.email,
+      customer_phone: form.phone,
+      shipping_address: form.address,
+      notes: form.notes || null,
+      items: items,
+      total: cartTotal,
+      paystack_reference: reference,
+      status: "pending",
     });
-  }
 
-  setIsProcessing(false);
-  clearCart();
-  navigate('/order-confirmed', { state: { reference } });
-}
+    if (insertError) {
+      setIsProcessing(false);
+      setError(
+        "Payment succeeded, but saving your order failed. Please contact us with reference: " +
+          reference,
+      );
+      return;
+    }
+
+    // Decrement stock for each purchased item/size
+    for (const item of items) {
+      const { error: stockError } = await supabase.rpc("decrement_stock", {
+        p_product_id: item.id,
+        p_size: item.size,
+        p_qty: item.quantity,
+      });
+
+      if (stockError) {
+        console.error("Stock decrement failed:", stockError);
+      }
+    }
+
+    setIsProcessing(false);
+    clearCart();
+    navigate("/order-confirmed", { state: { reference } });
+  }
 
   if (items.length === 0) {
     return (
@@ -133,6 +146,13 @@ async function saveOrder(reference) {
           rows={3}
           required
         />
+        <textarea
+          name="notes"
+          placeholder="Anything we need to know? (optional)"
+          value={form.notes}
+          onChange={handleChange}
+          rows={2}
+        />
 
         <div className="checkout__total">
           <span>Total</span>
@@ -141,8 +161,12 @@ async function saveOrder(reference) {
 
         {error && <p className="checkout__error">{error}</p>}
 
-        <button type="submit" className="checkout__pay-btn" disabled={isProcessing}>
-          {isProcessing ? 'Processing…' : 'Pay with Paystack'}
+        <button
+          type="submit"
+          className="checkout__pay-btn"
+          disabled={isProcessing}
+        >
+          {isProcessing ? "Processing…" : "Pay with Paystack"}
         </button>
       </form>
     </section>

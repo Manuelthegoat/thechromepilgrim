@@ -8,7 +8,7 @@ import "./Checkout.css";
 
 const SHIPPING_OPTIONS = [
   { label: "Standard (Enugu Only)", value: "enugu", price: 6000 },
-  { label: "Outside Lagos", value: "outside-lagos", price: 11000 },
+  { label: "Outside Enugu", value: "outside-enugu", price: 11000 },
 ];
 
 function Checkout() {

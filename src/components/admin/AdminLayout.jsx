@@ -45,7 +45,7 @@ function AdminLayout() {
           </NavLink>
           <NavLink to="/admin/discounts" onClick={() => setMenuOpen(false)}>
             Discounts
-          </NavLink>a
+          </NavLink>
         </nav>
         <button className="admin-layout__logout" onClick={handleLogout}>
           Log out

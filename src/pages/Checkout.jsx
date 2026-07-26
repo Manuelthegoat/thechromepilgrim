@@ -2,8 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { supabase } from "../lib/supabaseClient";
+import toast from "react-hot-toast";
 import Eyebrow from "../components/shared/Eyebrow";
 import "./Checkout.css";
+
+const SHIPPING_OPTIONS = [
+  { label: "Standard (Enugu Only)", value: "enugu", price: 6000 },
+  { label: "Outside Lagos", value: "outside-lagos", price: 11000 },
+];
 
 function Checkout() {
   const { items, cartTotal, clearCart } = useCart();
@@ -16,15 +22,75 @@ function Checkout() {
     address: "",
     notes: "",
   });
+  const [shippingMethod, setShippingMethod] = useState(
+    SHIPPING_OPTIONS[0].value,
+  );
+  const [discountCode, setDiscountCode] = useState("");
+  const [appliedDiscount, setAppliedDiscount] = useState(null);
+  const [discountError, setDiscountError] = useState(null);
+  const [checkingCode, setCheckingCode] = useState(false);
+
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
+
+  const selectedShipping = SHIPPING_OPTIONS.find(
+    (s) => s.value === shippingMethod,
+  );
+
+  const discountAmount = appliedDiscount
+    ? appliedDiscount.type === "percent"
+      ? Math.round((cartTotal * appliedDiscount.value) / 100)
+      : Math.min(appliedDiscount.value, cartTotal) // never discount below 0
+    : 0;
+
+  const orderTotal = cartTotal - discountAmount + selectedShipping.price;
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
   function isFormValid() {
-    return form.name && form.email && form.phone && form.address; // notes intentionally excluded
+    return form.name && form.email && form.phone && form.address;
+  }
+
+  async function handleApplyDiscount() {
+    if (!discountCode.trim()) return;
+
+    setCheckingCode(true);
+    setDiscountError(null);
+
+    const { data, error: rpcError } = await supabase.rpc(
+      "validate_discount_code",
+      {
+        p_code: discountCode.trim(),
+      },
+    );
+
+    setCheckingCode(false);
+
+    const result = data?.[0];
+
+    if (rpcError || !result?.valid) {
+      setDiscountError("Invalid or expired code.");
+      setAppliedDiscount(null);
+      toast.error("Invalid or expired code");
+
+      return;
+    }
+
+    setAppliedDiscount({
+      code: discountCode.trim().toUpperCase(),
+      type: result.code_type,
+      value: result.code_value,
+    });
+    toast.success(`Code ${discountCode.trim().toUpperCase()} applied`);
+  }
+
+  function removeDiscount() {
+    setAppliedDiscount(null);
+    setDiscountCode("");
+    setDiscountError(null);
+    toast("Discount removed");
   }
 
   function handlePayment(e) {
@@ -37,7 +103,7 @@ function Checkout() {
     const handler = window.PaystackPop.setup({
       key: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
       email: form.email,
-      amount: cartTotal * 100, // Paystack expects the amount in kobo
+      amount: orderTotal * 100,
       currency: "NGN",
       metadata: {
         custom_fields: [
@@ -54,6 +120,7 @@ function Checkout() {
       },
       onClose: () => {
         setIsProcessing(false);
+        toast.error("Payment window closed");
       },
     });
 
@@ -67,8 +134,12 @@ function Checkout() {
       customer_phone: form.phone,
       shipping_address: form.address,
       notes: form.notes || null,
+      shipping_method: selectedShipping.label,
+      shipping_cost: selectedShipping.price,
+      discount_code: appliedDiscount?.code || null,
+      discount_amount: discountAmount,
       items: items,
-      total: cartTotal,
+      total: orderTotal,
       paystack_reference: reference,
       status: "pending",
     });
@@ -79,24 +150,22 @@ function Checkout() {
         "Payment succeeded, but saving your order failed. Please contact us with reference: " +
           reference,
       );
+      toast.error("Something went wrong saving your order");
       return;
     }
 
-    // Decrement stock for each purchased item/size
     for (const item of items) {
       const { error: stockError } = await supabase.rpc("decrement_stock", {
         p_product_id: item.id,
         p_size: item.size,
         p_qty: item.quantity,
       });
-
-      if (stockError) {
-        console.error("Stock decrement failed:", stockError);
-      }
+      if (stockError) console.error("Stock decrement failed:", stockError);
     }
 
     setIsProcessing(false);
     clearCart();
+    toast.success("Payment successful — order placed!");
     navigate("/order-confirmed", { state: { reference } });
   }
 
@@ -154,9 +223,69 @@ function Checkout() {
           rows={2}
         />
 
-        <div className="checkout__total">
-          <span>Total</span>
-          <span>₦{cartTotal.toLocaleString()}</span>
+        <select
+          className="checkout__shipping-select"
+          value={shippingMethod}
+          onChange={(e) => setShippingMethod(e.target.value)}
+        >
+          {SHIPPING_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label} — ₦{option.price.toLocaleString()}
+            </option>
+          ))}
+        </select>
+
+        <div className="checkout__discount">
+          {appliedDiscount ? (
+            <div className="checkout__discount-applied">
+              <span>
+                Code <strong>{appliedDiscount.code}</strong> applied
+              </span>
+              <button type="button" onClick={removeDiscount}>
+                Remove
+              </button>
+            </div>
+          ) : (
+            <div className="checkout__discount-input">
+              <input
+                type="text"
+                placeholder="Discount code"
+                value={discountCode}
+                onChange={(e) => setDiscountCode(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={handleApplyDiscount}
+                disabled={checkingCode}
+              >
+                {checkingCode ? "..." : "Apply"}
+              </button>
+            </div>
+          )}
+          {discountError && (
+            <p className="checkout__discount-error">{discountError}</p>
+          )}
+        </div>
+
+        <div className="checkout__summary">
+          <div className="checkout__summary-row">
+            <span>Subtotal</span>
+            <span>₦{cartTotal.toLocaleString()}</span>
+          </div>
+          {appliedDiscount && (
+            <div className="checkout__summary-row checkout__summary-row--discount">
+              <span>Discount</span>
+              <span>−₦{discountAmount.toLocaleString()}</span>
+            </div>
+          )}
+          <div className="checkout__summary-row">
+            <span>Shipping</span>
+            <span>₦{selectedShipping.price.toLocaleString()}</span>
+          </div>
+          <div className="checkout__summary-row checkout__summary-row--total">
+            <span>Total</span>
+            <span>₦{orderTotal.toLocaleString()}</span>
+          </div>
         </div>
 
         {error && <p className="checkout__error">{error}</p>}
@@ -166,7 +295,7 @@ function Checkout() {
           className="checkout__pay-btn"
           disabled={isProcessing}
         >
-          {isProcessing ? "Processing…" : "Pay with Paystack"}
+          {isProcessing ? "Processing…" : "Pay Now"}
         </button>
       </form>
     </section>

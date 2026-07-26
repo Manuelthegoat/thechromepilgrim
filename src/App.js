@@ -19,13 +19,34 @@ import AdminLayout from "./components/admin/AdminLayout";
 import AdminOverview from "./pages/admin/AdminOverview";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminProducts from "./pages/admin/AdminProducts";
-import AdminGallery from './pages/admin/AdminGallery';
+import AdminGallery from "./pages/admin/AdminGallery";
+import { Toaster } from "react-hot-toast";
+import AdminDiscounts from "./pages/admin/AdminDiscounts";
 
 function App() {
   return (
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                fontFamily: "var(--font-mono)",
+                fontSize: "12px",
+                letterSpacing: "0.5px",
+                background: "#14130f",
+                color: "#fff",
+                borderRadius: "0px",
+              },
+              success: {
+                iconTheme: { primary: "#8a7238", secondary: "#fff" },
+              },
+              error: {
+                style: { background: "#a03030" },
+              },
+            }}
+          />
           <ScrollToTop />
           <Routes>
             <Route element={<Layout />}>
@@ -52,6 +73,7 @@ function App() {
                 <Route path="orders" element={<AdminOrders />} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="gallery" element={<AdminGallery />} />
+                <Route path="discounts" element={<AdminDiscounts />} />
               </Route>
             </Route>
           </Routes>

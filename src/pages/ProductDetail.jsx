@@ -4,34 +4,12 @@ import { supabase } from "../lib/supabaseClient";
 import { useCart } from "../context/CartContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
+import toast from "react-hot-toast";
 import Accordion from "../components/shared/Accordion";
 import "./ProductDetail.css";
 import "swiper/css";
 import "swiper/css/pagination";
 
-const ACCORDION_ITEMS = [
-  {
-    title: "Delivery information",
-    content: (
-      <p>
-        All pre-orders are processed within 5-10 business days before they are
-        sent out for delivery. Please confirm the delivery information for each
-        item by reading its description. To ensure smooth communication, please
-        provide a valid email and phone number when placing your order. Note
-        that import duties may apply for customers in certain regions. For more
-        info, refer to our shipping policy.
-      </p>
-    ),
-  },
-  {
-    title: "Product description",
-    content: <p>A description of this piece goes here.</p>,
-  },
-  {
-    title: "Size guide",
-    content: <p>Size guide details go here.</p>,
-  },
-];
 
 function ProductDetail() {
   const { id } = useParams();
@@ -46,7 +24,9 @@ function ProductDetail() {
     async function fetchProduct() {
       const { data, error } = await supabase
         .from("products")
-        .select("id, name, price, images, sizes, stock")
+        .select(
+          "id, name, price, images, sizes, stock, description, sizing_guide_image",
+        )
         .eq("id", id)
         .single();
 
@@ -76,6 +56,29 @@ function ProductDetail() {
       </section>
     );
   }
+  const ACCORDION_ITEMS = [
+  {
+    title: 'Delivery information',
+    content: (
+      <p>
+        All pre-orders are processed within 5–10 business days before they are sent out for delivery.
+        Import duties may apply for customers in certain regions.
+      </p>
+    ),
+  },
+  {
+    title: 'Product description',
+    content: <p>{product.description || 'No description available.'}</p>,
+  },
+  {
+    title: 'Size guide',
+    content: product.sizing_guide_image ? (
+      <img src={product.sizing_guide_image} alt="Size guide" style={{ width: '100%', display: 'block' }} />
+    ) : (
+      <p>No size guide available for this item.</p>
+    ),
+  },
+];
 
   const { name, price, sizes } = product;
   const isProductSoldOut = product.stock
@@ -150,7 +153,7 @@ function ProductDetail() {
                 )
               }
             >
-              +
+              -
             </button>
             <span>{quantity}</span>
             <button onClick={() => setQuantity((q) => q + 1)}>+</button>
@@ -160,7 +163,10 @@ function ProductDetail() {
         <button
           className="product-detail__add-btn"
           disabled={!selectedSize || isProductSoldOut}
-          onClick={() => addItem(product, selectedSize, quantity)}
+          onClick={() => {
+            addItem(product, selectedSize, quantity);
+            toast.success(`Added ${name} (${selectedSize}) to cart`);
+          }}
         >
           {isProductSoldOut
             ? "Sold out"

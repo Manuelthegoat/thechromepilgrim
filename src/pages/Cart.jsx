@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Eyebrow from "../components/shared/Eyebrow";
+import toast from "react-hot-toast";
 import "./Cart.css";
 
 function Cart() {
@@ -56,7 +57,10 @@ function Cart() {
 
               <button
                 className="cart__item-remove"
-                onClick={() => removeItem(item.id, item.size)}
+                onClick={() => {
+                  removeItem(item.id, item.size);
+                  toast.success(`Removed ${item.name}`);
+                }}
               >
                 Remove
               </button>

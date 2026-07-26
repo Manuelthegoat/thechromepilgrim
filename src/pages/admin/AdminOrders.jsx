@@ -39,6 +39,7 @@ function AdminOrders() {
             <th>Date</th>
             <th>Customer</th>
             <th>Items</th>
+            <th>Shipping</th>
             <th>Total</th>
             <th>Status</th>
             <th>Reference</th>
@@ -62,6 +63,14 @@ function AdminOrders() {
                     {item.name} ({item.size}) × {item.quantity}
                   </div>
                 ))}
+              </td>
+              <td>
+                {order.shipping_method && (
+                  <div className="admin-orders__sub">
+                    {order.shipping_method} (₦
+                    {Number(order.shipping_cost).toLocaleString()})
+                  </div>
+                )}
               </td>
               <td>₦{Number(order.total).toLocaleString()}</td>
               <td>

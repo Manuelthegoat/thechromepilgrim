@@ -66,3 +66,104 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+.checkout__shipping-select {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 12px;
+  border: 0.5px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+}
+.checkout__shipping-select {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 12px;
+  border: 0.5px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+}
+
+.checkout__discount-input {
+  display: flex;
+  gap: 8px;
+}
+
+.checkout__discount-input input {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 12px;
+  border: 0.5px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+}
+
+.checkout__discount-input button {
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  padding: 0 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.checkout__discount-input button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkout__discount-applied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  border: 0.5px solid var(--line);
+  padding: 10px 12px;
+}
+
+.checkout__discount-applied button {
+  background: none;
+  border: none;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-decoration: underline;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.checkout__discount-error {
+  font-size: 11px;
+  color: #a03030;
+  margin-top: 4px;
+}
+
+.checkout__summary {
+  margin-top: 10px;
+  border-top: 0.5px solid var(--line);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkout__summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.checkout__summary-row--discount {
+  color: var(--accent-brass);
+}
+
+.checkout__summary-row--total {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: bold;
+  border-top: 0.5px solid var(--line);
+  padding-top: 10px;
+  margin-top: 4px;
+}

@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabaseClient';
-import './AdminProducts.css';
+import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import toast from "react-hot-toast";
+import "./AdminProducts.css";
 
 const BLANK_PRODUCT = {
-  name: '',
-  price: '',
-  category: 'shop',
-  sizes: ['S', 'M', 'L', 'XL'],
+  name: "",
+  price: "",
+  category: "shop",
+  sizes: ["S", "M", "L", "XL"],
   stock: { S: 0, M: 0, L: 0, XL: 0 },
   images: [],
+  description: "",
+  sizing_guide_image: "",
   active: true,
 };
 
@@ -24,7 +27,10 @@ function AdminProducts() {
   }, []);
 
   async function fetchProducts() {
-    const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
     if (!error) setProducts(data);
     setLoading(false);
   }
@@ -46,20 +52,47 @@ function AdminProducts() {
     setUploading(true);
     const fileName = `${Date.now()}-${file.name}`;
     const { error: uploadError } = await supabase.storage
-      .from('product-images')
+      .from("product-images")
       .upload(fileName, file);
 
     if (uploadError) {
-      alert('Image upload failed: ' + uploadError.message);
+      alert("Image upload failed: " + uploadError.message);
       setUploading(false);
       return;
     }
 
-    const { data } = supabase.storage.from('product-images').getPublicUrl(fileName);
+    const { data } = supabase.storage
+      .from("product-images")
+      .getPublicUrl(fileName);
     setForm((f) => ({ ...f, images: [...f.images, data.publicUrl] }));
     setUploading(false);
   }
+  async function handleSizingGuideUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
 
+    setUploading(true);
+    const fileName = `sizing-${Date.now()}-${file.name}`;
+    const { error: uploadError } = await supabase.storage
+      .from("product-images")
+      .upload(fileName, file);
+
+    if (uploadError) {
+      toast.error("Sizing guide upload failed: " + uploadError.message);
+      setUploading(false);
+      return;
+    }
+
+    const { data } = supabase.storage
+      .from("product-images")
+      .getPublicUrl(fileName);
+    setForm((f) => ({ ...f, sizing_guide_image: data.publicUrl }));
+    setUploading(false);
+  }
+
+  function removeSizingGuide() {
+    setForm((f) => ({ ...f, sizing_guide_image: "" }));
+  }
   function removeImage(url) {
     setForm((f) => ({ ...f, images: f.images.filter((img) => img !== url) }));
   }
@@ -68,23 +101,27 @@ function AdminProducts() {
     setForm((f) => ({ ...f, stock: { ...f.stock, [size]: Number(value) } }));
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const payload = { ...form, price: Number(form.price) };
+async function handleSubmit(e) {
+  e.preventDefault();
+  const payload = { ...form, price: Number(form.price) };
 
-    if (editingId) {
-      await supabase.from('products').update(payload).eq('id', editingId);
-    } else {
-      await supabase.from('products').insert(payload);
-    }
+  const { error } = editingId
+    ? await supabase.from('products').update(payload).eq('id', editingId)
+    : await supabase.from('products').insert(payload);
 
-    resetForm();
-    fetchProducts();
+  if (error) {
+    toast.error('Save failed: ' + error.message);
+    return;
   }
 
+  toast.success(editingId ? 'Product updated' : 'Product added');
+  resetForm();
+  fetchProducts();
+}
+
   async function handleDelete(id) {
-    if (!window.confirm('Delete this product?')) return;
-    await supabase.from('products').delete().eq('id', id);
+    if (!window.confirm("Delete this product?")) return;
+    await supabase.from("products").delete().eq("id", id);
     fetchProducts();
   }
 
@@ -93,7 +130,7 @@ function AdminProducts() {
       <h1>Products</h1>
 
       <form className="admin-products__form" onSubmit={handleSubmit}>
-        <h2>{editingId ? 'Edit product' : 'Add product'}</h2>
+        <h2>{editingId ? "Edit product" : "Add product"}</h2>
 
         <input
           type="text"
@@ -109,7 +146,16 @@ function AdminProducts() {
           onChange={(e) => setForm({ ...form, price: e.target.value })}
           required
         />
-        <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
+        <textarea
+          placeholder="Product description"
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          rows={3}
+        />
+        <select
+          value={form.category}
+          onChange={(e) => setForm({ ...form, category: e.target.value })}
+        >
           <option value="shop">Shop</option>
           <option value="gallery">Gallery</option>
         </select>
@@ -131,15 +177,39 @@ function AdminProducts() {
 
         <div className="admin-products__images">
           <div className="admin-products__label">Images</div>
-          <input type="file" accept="image/*" onChange={handleImageUpload} disabled={uploading} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            disabled={uploading}
+          />
           <div className="admin-products__image-list">
             {form.images.map((url) => (
               <div key={url} className="admin-products__image-thumb">
                 <img src={url} alt="" />
-                <button type="button" onClick={() => removeImage(url)}>×</button>
+                <button type="button" onClick={() => removeImage(url)}>
+                  ×
+                </button>
               </div>
             ))}
           </div>
+        </div>
+        <div className="admin-products__sizing-guide">
+          <div className="admin-products__label">Sizing guide image</div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleSizingGuideUpload}
+            disabled={uploading}
+          />
+          {form.sizing_guide_image && (
+            <div className="admin-products__image-thumb">
+              <img src={form.sizing_guide_image} alt="Sizing guide" />
+              <button type="button" onClick={removeSizingGuide}>
+                ×
+              </button>
+            </div>
+          )}
         </div>
 
         <label className="admin-products__active">
@@ -152,8 +222,14 @@ function AdminProducts() {
         </label>
 
         <div className="admin-products__form-actions">
-          <button type="submit">{editingId ? 'Save changes' : 'Add product'}</button>
-          {editingId && <button type="button" onClick={resetForm}>Cancel</button>}
+          <button type="submit">
+            {editingId ? "Save changes" : "Add product"}
+          </button>
+          {editingId && (
+            <button type="button" onClick={resetForm}>
+              Cancel
+            </button>
+          )}
         </div>
       </form>
 
@@ -163,10 +239,19 @@ function AdminProducts() {
         ) : (
           products.map((product) => (
             <div key={product.id} className="admin-products__row">
-              {product.images?.[0] && <img src={product.images[0]} alt="" className="admin-products__row-img" />}
+              {product.images?.[0] && (
+                <img
+                  src={product.images[0]}
+                  alt=""
+                  className="admin-products__row-img"
+                />
+              )}
               <div className="admin-products__row-info">
                 <div>{product.name}</div>
-                <div className="admin-products__sub">₦{Number(product.price).toLocaleString()} — {product.category} {!product.active && '(hidden)'}</div>
+                <div className="admin-products__sub">
+                  ₦{Number(product.price).toLocaleString()} — {product.category}{" "}
+                  {!product.active && "(hidden)"}
+                </div>
               </div>
               <div className="admin-products__row-actions">
                 <button onClick={() => startEdit(product)}>Edit</button>

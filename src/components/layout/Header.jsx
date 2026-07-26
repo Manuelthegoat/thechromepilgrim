@@ -49,7 +49,7 @@ function Header() {
       </Link>
 
       <div className="header__side header__side--right">
-        <span className="header__link">LOGIN</span>
+        {/* <span className="header__link">LOGIN</span> */}
         <Link to="/cart" className="header__cart" aria-label="Cart">
           <img src={cartIcon} alt="Cart" className="header__cart-icon" />
           {cartCount > 0 && (

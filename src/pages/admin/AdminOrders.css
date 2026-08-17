@@ -39,3 +39,6 @@
   font-size: 11px;
   padding: 4px;
 }
+.admin-orders__table td:nth-child(2) {
+  max-width: 200px;
+}

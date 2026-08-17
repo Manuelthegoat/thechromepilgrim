@@ -138,3 +138,14 @@
   cursor: pointer;
   margin-left: 6px;
 }
+.ql-toolbar {
+  border-color: #ddd !important;
+  font-family: var(--font-mono);
+}
+
+.ql-container {
+  border-color: #ddd !important;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  min-height: 100px;
+}

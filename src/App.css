@@ -2,3 +2,6 @@
 .gallery__plate {
   background: #efece3; /* one step darker than --bg, distinct from white --panel */
 }
+.text-preserve-breaks {
+  white-space: pre-line;
+}

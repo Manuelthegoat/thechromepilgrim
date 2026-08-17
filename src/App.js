@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
@@ -22,8 +23,13 @@ import AdminProducts from "./pages/admin/AdminProducts";
 import AdminGallery from "./pages/admin/AdminGallery";
 import { Toaster } from "react-hot-toast";
 import AdminDiscounts from "./pages/admin/AdminDiscounts";
+import LoadingScreen from "./components/shared/LoadingScreen";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  if (isLoading) {
+    return <LoadingScreen onComplete={() => setIsLoading(false)} />;
+  }
   return (
     <AuthProvider>
       <CartProvider>

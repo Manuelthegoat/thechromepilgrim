@@ -53,8 +53,14 @@ function AdminOrders() {
                 {order.customer_name}
                 <div className="admin-orders__sub">{order.customer_email}</div>
                 <div className="admin-orders__sub">{order.customer_phone}</div>
+                Address:{" "}
+                <div className="admin-orders__sub">
+                  {order.shipping_address}
+                </div>
                 {order.notes && (
-                  <div className="admin-orders__sub">Note: {order.notes}</div>
+                  <div className="admin-orders__sub text-preserve-breaks">
+                    Note: {order.notes}
+                  </div>
                 )}
               </td>
               <td>

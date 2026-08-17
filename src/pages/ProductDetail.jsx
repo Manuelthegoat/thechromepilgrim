@@ -10,7 +10,6 @@ import "./ProductDetail.css";
 import "swiper/css";
 import "swiper/css/pagination";
 
-
 function ProductDetail() {
   const { id } = useParams();
   const { addItem } = useCart();
@@ -56,31 +55,46 @@ function ProductDetail() {
       </section>
     );
   }
+
   const ACCORDION_ITEMS = [
-  {
-    title: 'Delivery information',
-    content: (
-      <p>
-        All pre-orders are processed within 5–10 business days before they are sent out for delivery.
-        Import duties may apply for customers in certain regions.
-      </p>
-    ),
-  },
-  {
-    title: 'Product description',
-    content: <p>{product.description || 'No description available.'}</p>,
-  },
-  {
-    title: 'Size guide',
-    content: product.sizing_guide_image ? (
-      <img src={product.sizing_guide_image} alt="Size guide" style={{ width: '100%', display: 'block' }} />
-    ) : (
-      <p>No size guide available for this item.</p>
-    ),
-  },
-];
+    {
+      title: "Delivery information",
+      content: (
+        <p>
+          All pre-orders are processed within 5–10 business days before they are
+          sent out for delivery. Import duties may apply for customers in
+          certain regions.
+        </p>
+      ),
+    },
+    {
+      title: "Product description",
+      content: (
+        <p className="text-preserve-breaks">
+          {product.description || "No description available."}
+        </p>
+      ),
+    },
+    {
+      title: "Size guide",
+      content: product.sizing_guide_image ? (
+        <img
+          src={product.sizing_guide_image}
+          alt="Size guide"
+          style={{ width: "100%", display: "block" }}
+        />
+      ) : (
+        <p>No size guide available for this item.</p>
+      ),
+    },
+  ];
 
   const { name, price, sizes } = product;
+  function handleSizeSelect(size) {
+    setSelectedSize(size);
+    const available = product.stock?.[size] ?? 1;
+    setQuantity((q) => Math.min(q, available));
+  }
   const isProductSoldOut = product.stock
     ? Object.values(product.stock).every((qty) => qty <= 0)
     : false;
@@ -128,7 +142,7 @@ function ProductDetail() {
                 <button
                   key={size}
                   className={`product-detail__size-btn ${selectedSize === size ? "product-detail__size-btn--active" : ""} ${isSoldOut ? "product-detail__size-btn--soldout" : ""}`}
-                  onClick={() => !isSoldOut && setSelectedSize(size)}
+                  onClick={() => !isSoldOut && handleSizeSelect(size)}
                   disabled={isSoldOut}
                 >
                   {size}
@@ -147,16 +161,25 @@ function ProductDetail() {
           <div className="product-detail__label">Quantity</div>
           <div className="product-detail__qty-controls">
             <button
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              disabled={isProductSoldOut}
+            >
+              −
+            </button>
+            <span>{quantity}</span>
+            <button
               onClick={() =>
                 setQuantity((q) =>
                   Math.min(product.stock?.[selectedSize] ?? 1, q + 1),
                 )
               }
+              disabled={
+                isProductSoldOut ||
+                quantity >= (product.stock?.[selectedSize] ?? 1)
+              }
             >
-              -
+              +
             </button>
-            <span>{quantity}</span>
-            <button onClick={() => setQuantity((q) => q + 1)}>+</button>
           </div>
         </div>
 

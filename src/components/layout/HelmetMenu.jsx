@@ -4,6 +4,7 @@ import './HelmetMenu.css';
 const MENU_ITEMS = [
   { label: 'Archives', to: '/gallery' },
   { label: '"The Chrome Pilgrim" Sleeves', to: '/shop' },
+  { label: 'Objects', to: '/objects' },
   { label: 'Info', to: '/info' },
   { label: 'My Bag', to: '/cart' },
 ];

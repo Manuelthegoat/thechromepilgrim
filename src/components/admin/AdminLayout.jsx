@@ -43,6 +43,9 @@ function AdminLayout() {
           <NavLink to="/admin/gallery" onClick={() => setMenuOpen(false)}>
             Gallery
           </NavLink>
+          <NavLink to="/admin/objects" onClick={() => setMenuOpen(false)}>
+            Objects
+          </NavLink>
           <NavLink to="/admin/discounts" onClick={() => setMenuOpen(false)}>
             Discounts
           </NavLink>

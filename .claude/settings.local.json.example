@@ -1,0 +1,5 @@
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "paste-a-current-agentrouter-key-here"
+  }
+}

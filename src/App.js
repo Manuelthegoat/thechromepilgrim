@@ -24,6 +24,11 @@ import AdminGallery from "./pages/admin/AdminGallery";
 import { Toaster } from "react-hot-toast";
 import AdminDiscounts from "./pages/admin/AdminDiscounts";
 import LoadingScreen from "./components/shared/LoadingScreen";
+import AdminObjects from './pages/admin/AdminObjects';
+import ObjectDetail from './pages/ObjectDetail';
+import Objects from './pages/Objects';
+
+
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -65,6 +70,8 @@ function App() {
               <Route path="/gallery/:id" element={<GalleryDetail />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-confirmed" element={<OrderConfirmed />} />
+              <Route path="/objects" element={<Objects />} />
+              <Route path="/objects/:id" element={<ObjectDetail />} />
 
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route
@@ -80,6 +87,7 @@ function App() {
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="gallery" element={<AdminGallery />} />
                 <Route path="discounts" element={<AdminDiscounts />} />
+                <Route path="objects" element={<AdminObjects />} />
               </Route>
             </Route>
           </Routes>

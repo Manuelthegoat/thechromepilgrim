@@ -155,12 +155,19 @@ function Checkout() {
     }
 
     for (const item of items) {
-      const { error: stockError } = await supabase.rpc("decrement_stock", {
-        p_product_id: item.id,
-        p_size: item.size,
-        p_qty: item.quantity,
-      });
-      if (stockError) console.error("Stock decrement failed:", stockError);
+      if (item.type === "object") {
+        const { error: soldError } = await supabase.rpc("mark_object_sold", {
+          p_object_id: item.id,
+        });
+        if (soldError) console.error("Marking object sold failed:", soldError);
+      } else {
+        const { error: stockError } = await supabase.rpc("decrement_stock", {
+          p_product_id: item.id,
+          p_size: item.size,
+          p_qty: item.quantity,
+        });
+        if (stockError) console.error("Stock decrement failed:", stockError);
+      }
     }
 
     setIsProcessing(false);

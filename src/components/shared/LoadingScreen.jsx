@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
-import './LoadingScreen.css';
+import { useState, useEffect, useMemo } from "react";
+import "./LoadingScreen.css";
 
-const MESSAGES = ['Forging Helmet', 'Accessing Archive', 'Welcome User :)'];
+const MESSAGES = ["Forging Helmet", "Accessing Archive", "Welcome User :)"];
 const TYPE_SPEED = 100;
 const ERASE_SPEED = 50;
 const HOLD_TIME = 600;
@@ -9,8 +9,8 @@ const BAR_LENGTH = 20;
 
 function LoadingScreen({ onComplete }) {
   const [messageIndex, setMessageIndex] = useState(0);
-  const [displayedText, setDisplayedText] = useState('');
-  const [phase, setPhase] = useState('typing');
+  const [displayedText, setDisplayedText] = useState("");
+  const [phase, setPhase] = useState("typing");
   const [progress, setProgress] = useState(0);
 
   // Total duration, calculated from message lengths so the bar finishes exactly when the text does
@@ -37,34 +37,34 @@ function LoadingScreen({ onComplete }) {
     const currentMessage = MESSAGES[messageIndex];
     const isLastMessage = messageIndex === MESSAGES.length - 1;
 
-    if (phase === 'typing') {
-let charIndex = 0;
+    if (phase === "typing") {
+      let charIndex = 0;
       const typeInterval = setInterval(() => {
         charIndex++;
         setDisplayedText(currentMessage.slice(0, charIndex));
 
         if (charIndex === currentMessage.length) {
           clearInterval(typeInterval);
-          setPhase('holding');
+          setPhase("holding");
         }
       }, TYPE_SPEED);
 
       return () => clearInterval(typeInterval);
     }
 
-    if (phase === 'holding') {
+    if (phase === "holding") {
       const holdTimeout = setTimeout(() => {
         if (isLastMessage) {
           setTimeout(onComplete, HOLD_TIME);
         } else {
-          setPhase('erasing');
+          setPhase("erasing");
         }
       }, HOLD_TIME);
 
       return () => clearTimeout(holdTimeout);
     }
 
-    if (phase === 'erasing') {
+    if (phase === "erasing") {
       let charIndex = currentMessage.length;
 
       const eraseInterval = setInterval(() => {
@@ -74,7 +74,7 @@ let charIndex = 0;
         if (charIndex === 0) {
           clearInterval(eraseInterval);
           setMessageIndex((i) => i + 1);
-          setPhase('typing');
+          setPhase("typing");
         }
       }, ERASE_SPEED);
 
@@ -83,7 +83,7 @@ let charIndex = 0;
   }, [phase, messageIndex, onComplete]);
 
   const filledBars = Math.round((progress / 100) * BAR_LENGTH);
-  const bar = '█'.repeat(filledBars) + '░'.repeat(BAR_LENGTH - filledBars);
+  const bar = "█".repeat(filledBars) + "░".repeat(BAR_LENGTH - filledBars);
 
   return (
     <div className="loading-screen">

@@ -38,8 +38,7 @@ function LoadingScreen({ onComplete }) {
     const isLastMessage = messageIndex === MESSAGES.length - 1;
 
     if (phase === 'typing') {
-      let charIndex = displayedText.length;
-
+let charIndex = 0;
       const typeInterval = setInterval(() => {
         charIndex++;
         setDisplayedText(currentMessage.slice(0, charIndex));

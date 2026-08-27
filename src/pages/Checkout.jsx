@@ -7,8 +7,8 @@ import Eyebrow from "../components/shared/Eyebrow";
 import "./Checkout.css";
 
 const SHIPPING_OPTIONS = [
-  { label: "Standard (Enugu Only)", value: "enugu", price: 0 },
-  { label: "Outside Enugu", value: "outside-enugu", price: 11000 },
+  { label: "Standard (Enugu Only)", value: "enugu", price: 6000 },
+  { label: "Outside Enugu", value: "outside-enugu", price: 8000 },
 ];
 
 function Checkout() {

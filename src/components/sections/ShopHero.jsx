@@ -37,9 +37,27 @@ function shuffleSlides(images) {
   return shuffled;
 }
 
-function ShopHero() {
+function ShopHero({ onImagesLoaded }) {
   const [shuffledSlides] = useState(() => shuffleSlides(slides));
   const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    let settled = false;
+    const imageLoads = shuffledSlides.map((slide) => new Promise((resolve) => {
+      const image = new Image();
+      image.onload = resolve;
+      image.onerror = resolve;
+      image.src = slide;
+    }));
+
+    Promise.all(imageLoads).then(() => {
+      if (!settled) onImagesLoaded?.();
+    });
+
+    return () => {
+      settled = true;
+    };
+  }, [shuffledSlides, onImagesLoaded]);
 
   useEffect(() => {
     const interval = window.setInterval(() => {

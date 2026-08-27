@@ -17,6 +17,10 @@
   animation: spin .8s linear infinite;
 }
 
+.page-loader--shop {
+  z-index: 4999;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

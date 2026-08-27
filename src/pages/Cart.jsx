@@ -59,8 +59,8 @@ function Cart() {
     return (
       <section className="cart">
         <Eyebrow>YOUR CART</Eyebrow>
-        <p className="cart__empty">Nothing carried yet.</p>
-        <Link to="/shop" className="cart__continue">Continue browsing</Link>
+        <p className="cart__empty">NOTHINGNESS.</p>
+        <Link to="/shop" className="cart__continue">Continue Shopping</Link>
       </section>
     );
   }

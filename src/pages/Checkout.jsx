@@ -7,7 +7,7 @@ import Eyebrow from "../components/shared/Eyebrow";
 import "./Checkout.css";
 
 const SHIPPING_OPTIONS = [
-  { label: "Standard (Enugu Only)", value: "enugu", price: 6000 },
+  { label: "Standard (Enugu Only)", value: "enugu", price: 0 },
   { label: "Outside Enugu", value: "outside-enugu", price: 11000 },
 ];
 
@@ -153,7 +153,29 @@ function Checkout() {
       toast.error("Something went wrong saving your order");
       return;
     }
-
+    // inside saveOrder, right after the successful insert (before the stock decrement loop):
+    try {
+      await fetch(
+        `${process.env.REACT_APP_SUPABASE_URL}/functions/v1/send-order-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            customerEmail: form.email,
+            customerName: form.name,
+            items: items,
+            total: orderTotal,
+            reference: reference,
+          }),
+        },
+      );
+    } catch (emailError) {
+      console.error("Order email failed to send:", emailError);
+      // deliberately not blocking the order flow if email fails — the order itself already succeeded
+    }
     for (const item of items) {
       if (item.type === "object") {
         const { error: soldError } = await supabase.rpc("mark_object_sold", {

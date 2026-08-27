@@ -19,7 +19,11 @@
   color: var(--text-muted);
   text-decoration: none;
 }
-
+.cart__item-stock-note {
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
 .cart__continue:hover {
   color: var(--text);
 }

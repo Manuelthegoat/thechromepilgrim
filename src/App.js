@@ -27,6 +27,7 @@ import LoadingScreen from "./components/shared/LoadingScreen";
 import AdminObjects from './pages/admin/AdminObjects';
 import ObjectDetail from './pages/ObjectDetail';
 import Objects from './pages/Objects';
+import Contact from "./pages/Contact";
 
 
 
@@ -71,6 +72,7 @@ function App() {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/order-confirmed" element={<OrderConfirmed />} />
               <Route path="/objects" element={<Objects />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/objects/:id" element={<ObjectDetail />} />
 
               <Route path="/admin/login" element={<AdminLogin />} />

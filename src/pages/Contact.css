@@ -1,0 +1,42 @@
+.contact {
+  padding: 100px 26px 60px;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  min-height: 50vh;
+}
+
+.contact__info {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contact__row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.contact__value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 0.5px solid var(--line);
+  padding-bottom: 2px;
+  align-self: center;
+}
+
+.contact__value:hover {
+  color: var(--accent-brass);
+}

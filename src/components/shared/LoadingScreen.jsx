@@ -12,6 +12,8 @@ function LoadingScreen({ onComplete }) {
   const [displayedText, setDisplayedText] = useState("");
   const [phase, setPhase] = useState("typing");
   const [progress, setProgress] = useState(0);
+  const [animationComplete, setAnimationComplete] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   // Total duration, calculated from message lengths so the bar finishes exactly when the text does
   const totalDuration = useMemo(() => {
@@ -32,6 +34,49 @@ function LoadingScreen({ onComplete }) {
 
     return () => clearInterval(progressInterval);
   }, [totalDuration]);
+
+  // The page is mounted underneath this screen, so wait for every image that
+  // is currently rendered before allowing the screen to disappear.
+  useEffect(() => {
+    let observer;
+    const imageHandlers = new Map();
+
+    const checkImages = () => {
+      const images = Array.from(document.images);
+      const allLoaded = images.every((image) => image.complete);
+
+      setImagesLoaded(allLoaded);
+
+      images.forEach((image) => {
+        if (image.complete || imageHandlers.has(image)) return;
+        const handleSettled = () => {
+          image.removeEventListener("load", handleSettled);
+          image.removeEventListener("error", handleSettled);
+          imageHandlers.delete(image);
+          checkImages();
+        };
+        imageHandlers.set(image, handleSettled);
+        image.addEventListener("load", handleSettled, { once: true });
+        image.addEventListener("error", handleSettled, { once: true });
+      });
+    };
+
+    observer = new MutationObserver(checkImages);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["src", "srcset"] });
+    checkImages();
+
+    return () => {
+      observer.disconnect();
+      imageHandlers.forEach((handler, image) => {
+        image.removeEventListener("load", handler);
+        image.removeEventListener("error", handler);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    if (animationComplete && imagesLoaded) onComplete();
+  }, [animationComplete, imagesLoaded, onComplete]);
 
   useEffect(() => {
     const currentMessage = MESSAGES[messageIndex];
@@ -55,7 +100,7 @@ function LoadingScreen({ onComplete }) {
     if (phase === "holding") {
       const holdTimeout = setTimeout(() => {
         if (isLastMessage) {
-          setTimeout(onComplete, HOLD_TIME);
+          setAnimationComplete(true);
         } else {
           setPhase("erasing");
         }

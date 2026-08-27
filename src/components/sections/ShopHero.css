@@ -1,9 +1,28 @@
 .shop-hero {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   height: 100vh;
-  background-size: cover;
-  background-position: center;
   border-bottom: 0.5px solid var(--line);
+}
+
+.shop-hero__slide {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0;
+  transition: opacity 900ms ease-in-out;
+}
+
+.shop-hero__slide--active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop-hero__slide {
+    transition: none;
+  }
 }
 
 @media (max-width: 480px) {

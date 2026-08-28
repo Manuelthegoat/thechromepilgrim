@@ -8,7 +8,7 @@ function ProductCard({ id, plateNumber, name, price, images, stock }) {
     <Link to={`/shop/${id}`} className="product-card">
       <div className="product-card__media">
         {images?.[0] ? (
-          <img src={images[0]} alt={name} className="product-card__img" />
+          <img src={images[0]} alt={name} className="product-card__img" loading="lazy" />
         ) : (
           <div className="product-card__placeholder">
             <span className="product-card__plate">PLATE {plateNumber}</span>

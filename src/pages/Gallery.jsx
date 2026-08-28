@@ -41,6 +41,7 @@ function Gallery() {
                     src={item.images[0]}
                     alt={item.title}
                     className="gallery__image"
+                    loading="lazy"
                   />
                 )}
               </div>

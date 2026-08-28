@@ -48,7 +48,7 @@ function ObjectDetail() {
   return (
     <section className="object-detail">
       <div className="object-detail__media">
-        {item.images?.[0] && <img src={item.images[0]} alt={item.title} />}
+        {item.images?.[0] && <img src={item.images[0]} alt={item.title} loading="lazy" />}
       </div>
       <div className="object-detail__info">
         <h1 className="object-detail__title">{item.title}</h1>

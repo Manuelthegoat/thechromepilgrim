@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import toast from "react-hot-toast";
+import imageCompression from "browser-image-compression";
 import "./AdminProducts.css";
 // import ReactQuill from 'react-quill-new';
-import 'react-quill-new/dist/quill.snow.css';
+import "react-quill-new/dist/quill.snow.css";
 
 const BLANK_PRODUCT = {
   name: "",
@@ -17,12 +18,19 @@ const BLANK_PRODUCT = {
   active: true,
 };
 
+const COMPRESSION_OPTIONS = {
+  maxSizeMB: 0.5,
+  maxWidthOrHeight: 1600,
+  useWebWorker: true,
+};
+
 function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(BLANK_PRODUCT);
   const [editingId, setEditingId] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     fetchProducts();
@@ -46,49 +54,80 @@ function AdminProducts() {
     setForm(BLANK_PRODUCT);
     setEditingId(null);
   }
-
   async function handleImageUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
 
     setUploading(true);
-    const fileName = `${Date.now()}-${file.name}`;
-    const { error: uploadError } = await supabase.storage
-      .from("product-images")
-      .upload(fileName, file);
+    setUploadProgress(0);
 
-    if (uploadError) {
-      alert("Image upload failed: " + uploadError.message);
-      setUploading(false);
-      return;
+    try {
+      const compressedFile = await imageCompression(file, {
+        ...COMPRESSION_OPTIONS,
+        onProgress: (percent) => {
+          // Compression accounts for roughly the first half of the bar
+          setUploadProgress(Math.round(percent * 0.5));
+        },
+      });
+
+      setUploadProgress(50);
+
+      const fileName = `${Date.now()}-${file.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from("product-images")
+        .upload(fileName, compressedFile);
+
+      if (uploadError) {
+        toast.error("Image upload failed: " + uploadError.message);
+        setUploading(false);
+        setUploadProgress(0);
+        return;
+      }
+
+      setUploadProgress(100);
+
+      const { data } = supabase.storage
+        .from("product-images")
+        .getPublicUrl(fileName);
+      setForm((f) => ({ ...f, images: [...f.images, data.publicUrl] }));
+    } catch (compressionError) {
+      toast.error("Image compression failed: " + compressionError.message);
     }
 
-    const { data } = supabase.storage
-      .from("product-images")
-      .getPublicUrl(fileName);
-    setForm((f) => ({ ...f, images: [...f.images, data.publicUrl] }));
-    setUploading(false);
+    setTimeout(() => {
+      setUploading(false);
+      setUploadProgress(0);
+    }, 400); // brief pause so the 100% state is visible before resetting
   }
+
   async function handleSizingGuideUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
 
     setUploading(true);
-    const fileName = `sizing-${Date.now()}-${file.name}`;
-    const { error: uploadError } = await supabase.storage
-      .from("product-images")
-      .upload(fileName, file);
 
-    if (uploadError) {
-      toast.error("Sizing guide upload failed: " + uploadError.message);
-      setUploading(false);
-      return;
+    try {
+      const compressedFile = await imageCompression(file, COMPRESSION_OPTIONS);
+
+      const fileName = `sizing-${Date.now()}-${file.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from("product-images")
+        .upload(fileName, compressedFile);
+
+      if (uploadError) {
+        toast.error("Sizing guide upload failed: " + uploadError.message);
+        setUploading(false);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from("product-images")
+        .getPublicUrl(fileName);
+      setForm((f) => ({ ...f, sizing_guide_image: data.publicUrl }));
+    } catch (compressionError) {
+      toast.error("Image compression failed: " + compressionError.message);
     }
 
-    const { data } = supabase.storage
-      .from("product-images")
-      .getPublicUrl(fileName);
-    setForm((f) => ({ ...f, sizing_guide_image: data.publicUrl }));
     setUploading(false);
   }
 
@@ -103,23 +142,23 @@ function AdminProducts() {
     setForm((f) => ({ ...f, stock: { ...f.stock, [size]: Number(value) } }));
   }
 
-async function handleSubmit(e) {
-  e.preventDefault();
-  const payload = { ...form, price: Number(form.price) };
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const payload = { ...form, price: Number(form.price) };
 
-  const { error } = editingId
-    ? await supabase.from('products').update(payload).eq('id', editingId)
-    : await supabase.from('products').insert(payload);
+    const { error } = editingId
+      ? await supabase.from("products").update(payload).eq("id", editingId)
+      : await supabase.from("products").insert(payload);
 
-  if (error) {
-    toast.error('Save failed: ' + error.message);
-    return;
+    if (error) {
+      toast.error("Save failed: " + error.message);
+      return;
+    }
+
+    toast.success(editingId ? "Product updated" : "Product added");
+    resetForm();
+    fetchProducts();
   }
-
-  toast.success(editingId ? 'Product updated' : 'Product added');
-  resetForm();
-  fetchProducts();
-}
 
   async function handleDelete(id) {
     if (!window.confirm("Delete this product?")) return;
@@ -185,6 +224,14 @@ async function handleSubmit(e) {
             onChange={handleImageUpload}
             disabled={uploading}
           />
+          {uploading && (
+            <div className="admin-products__progress">
+              <div
+                className="admin-products__progress-bar"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+          )}
           <div className="admin-products__image-list">
             {form.images.map((url) => (
               <div key={url} className="admin-products__image-thumb">

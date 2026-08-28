@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import toast from 'react-hot-toast';
+import imageCompression from 'browser-image-compression';
 import './AdminObjects.css';
 
 const BLANK_OBJECT = {
@@ -10,6 +11,12 @@ const BLANK_OBJECT = {
   description: '',
   sold: false,
   active: true,
+};
+
+const COMPRESSION_OPTIONS = {
+  maxSizeMB: 0.5,
+  maxWidthOrHeight: 1600,
+  useWebWorker: true,
 };
 
 function AdminObjects() {
@@ -47,19 +54,27 @@ function AdminObjects() {
     if (!file) return;
 
     setUploading(true);
-    const fileName = `object-${Date.now()}-${file.name}`;
-    const { error: uploadError } = await supabase.storage
-      .from('product-images')
-      .upload(fileName, file);
 
-    if (uploadError) {
-      toast.error('Upload failed: ' + uploadError.message);
-      setUploading(false);
-      return;
+    try {
+      const compressedFile = await imageCompression(file, COMPRESSION_OPTIONS);
+
+      const fileName = `object-${Date.now()}-${file.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from('product-images')
+        .upload(fileName, compressedFile);
+
+      if (uploadError) {
+        toast.error('Upload failed: ' + uploadError.message);
+        setUploading(false);
+        return;
+      }
+
+      const { data } = supabase.storage.from('product-images').getPublicUrl(fileName);
+      setForm((f) => ({ ...f, images: [...f.images, data.publicUrl] }));
+    } catch (compressionError) {
+      toast.error('Image compression failed: ' + compressionError.message);
     }
 
-    const { data } = supabase.storage.from('product-images').getPublicUrl(fileName);
-    setForm((f) => ({ ...f, images: [...f.images, data.publicUrl] }));
     setUploading(false);
   }
 

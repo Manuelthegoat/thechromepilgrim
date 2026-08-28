@@ -149,3 +149,16 @@
   font-size: 12px;
   min-height: 100px;
 }
+.admin-products__progress {
+  margin-top: 6px;
+  height: 4px;
+  background: #eee;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.admin-products__progress-bar {
+  height: 100%;
+  background: #14130f;
+  transition: width 0.15s ease;
+}

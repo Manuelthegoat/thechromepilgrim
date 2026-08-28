@@ -1,14 +1,22 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabaseClient';
-import './AdminGallery.css';
+import { useEffect, useState } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import imageCompression from "browser-image-compression";
+import "./AdminGallery.css";
+import toast from "react-hot-toast";
 
 const BLANK_ITEM = {
-  title: '',
+  title: "",
   images: [],
-  year: '',
-  medium: '',
-  description: '',
+  year: "",
+  medium: "",
+  description: "",
   active: true,
+};
+
+const COMPRESSION_OPTIONS = {
+  maxSizeMB: 0.5,
+  maxWidthOrHeight: 1600,
+  useWebWorker: true,
 };
 
 function AdminGallery() {
@@ -17,6 +25,7 @@ function AdminGallery() {
   const [form, setForm] = useState(BLANK_ITEM);
   const [editingId, setEditingId] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     fetchItems();
@@ -24,13 +33,57 @@ function AdminGallery() {
 
   async function fetchItems() {
     const { data, error } = await supabase
-      .from('gallery_items')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .from("gallery_items")
+      .select("*")
+      .order("created_at", { ascending: false });
     if (!error) setItems(data);
     setLoading(false);
   }
+  async function handleImageUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
 
+    setUploading(true);
+    setUploadProgress(0);
+
+    try {
+      const compressedFile = await imageCompression(file, {
+        ...COMPRESSION_OPTIONS,
+        onProgress: (percent) => {
+          // Compression accounts for roughly the first half of the bar
+          setUploadProgress(Math.round(percent * 0.5));
+        },
+      });
+
+      setUploadProgress(50);
+
+      const fileName = `${Date.now()}-${file.name}`;
+      const { error: uploadError } = await supabase.storage
+        .from("product-images")
+        .upload(fileName, compressedFile);
+
+      if (uploadError) {
+        toast.error("Image upload failed: " + uploadError.message);
+        setUploading(false);
+        setUploadProgress(0);
+        return;
+      }
+
+      setUploadProgress(100);
+
+      const { data } = supabase.storage
+        .from("product-images")
+        .getPublicUrl(fileName);
+      setForm((f) => ({ ...f, images: [...f.images, data.publicUrl] }));
+    } catch (compressionError) {
+      toast.error("Image compression failed: " + compressionError.message);
+    }
+
+    setTimeout(() => {
+      setUploading(false);
+      setUploadProgress(0);
+    }, 400); // brief pause so the 100% state is visible before resetting
+  }
   function startEdit(item) {
     setForm(item);
     setEditingId(item.id);
@@ -41,27 +94,6 @@ function AdminGallery() {
     setEditingId(null);
   }
 
-  async function handleImageUpload(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setUploading(true);
-    const fileName = `gallery-${Date.now()}-${file.name}`;
-    const { error: uploadError } = await supabase.storage
-      .from('product-images')
-      .upload(fileName, file);
-
-    if (uploadError) {
-      alert('Image upload failed: ' + uploadError.message);
-      setUploading(false);
-      return;
-    }
-
-    const { data } = supabase.storage.from('product-images').getPublicUrl(fileName);
-    setForm((f) => ({ ...f, images: [...f.images, data.publicUrl] }));
-    setUploading(false);
-  }
-
   function removeImage(url) {
     setForm((f) => ({ ...f, images: f.images.filter((img) => img !== url) }));
   }
@@ -70,11 +102,11 @@ function AdminGallery() {
     e.preventDefault();
 
     const { error } = editingId
-      ? await supabase.from('gallery_items').update(form).eq('id', editingId)
-      : await supabase.from('gallery_items').insert(form);
+      ? await supabase.from("gallery_items").update(form).eq("id", editingId)
+      : await supabase.from("gallery_items").insert(form);
 
     if (error) {
-      alert('Save failed: ' + error.message);
+      alert("Save failed: " + error.message);
       return;
     }
 
@@ -83,8 +115,8 @@ function AdminGallery() {
   }
 
   async function handleDelete(id) {
-    if (!window.confirm('Delete this piece?')) return;
-    await supabase.from('gallery_items').delete().eq('id', id);
+    if (!window.confirm("Delete this piece?")) return;
+    await supabase.from("gallery_items").delete().eq("id", id);
     fetchItems();
   }
 
@@ -93,7 +125,7 @@ function AdminGallery() {
       <h1>Gallery</h1>
 
       <form className="admin-gallery__form" onSubmit={handleSubmit}>
-        <h2>{editingId ? 'Edit piece' : 'Add piece'}</h2>
+        <h2>{editingId ? "Edit piece" : "Add piece"}</h2>
 
         <input
           type="text"
@@ -123,12 +155,27 @@ function AdminGallery() {
 
         <div className="admin-gallery__images">
           <div className="admin-gallery__label">Images</div>
-          <input type="file" accept="image/*" onChange={handleImageUpload} disabled={uploading} />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            disabled={uploading}
+          />
+          {uploading && (
+            <div className="admin-products__progress">
+              <div
+                className="admin-products__progress-bar"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+          )}
           <div className="admin-gallery__image-list">
             {form.images.map((url) => (
               <div key={url} className="admin-gallery__image-thumb">
                 <img src={url} alt="" />
-                <button type="button" onClick={() => removeImage(url)}>×</button>
+                <button type="button" onClick={() => removeImage(url)}>
+                  ×
+                </button>
               </div>
             ))}
           </div>
@@ -144,8 +191,14 @@ function AdminGallery() {
         </label>
 
         <div className="admin-gallery__form-actions">
-          <button type="submit">{editingId ? 'Save changes' : 'Add piece'}</button>
-          {editingId && <button type="button" onClick={resetForm}>Cancel</button>}
+          <button type="submit">
+            {editingId ? "Save changes" : "Add piece"}
+          </button>
+          {editingId && (
+            <button type="button" onClick={resetForm}>
+              Cancel
+            </button>
+          )}
         </div>
       </form>
 
@@ -155,10 +208,18 @@ function AdminGallery() {
         ) : (
           items.map((item) => (
             <div key={item.id} className="admin-gallery__row">
-              {item.images?.[0] && <img src={item.images[0]} alt="" className="admin-gallery__row-img" />}
+              {item.images?.[0] && (
+                <img
+                  src={item.images[0]}
+                  alt=""
+                  className="admin-gallery__row-img"
+                />
+              )}
               <div className="admin-gallery__row-info">
                 <div>{item.title}</div>
-                <div className="admin-gallery__sub">{item.year} {!item.active && '(hidden)'}</div>
+                <div className="admin-gallery__sub">
+                  {item.year} {!item.active && "(hidden)"}
+                </div>
               </div>
               <div className="admin-gallery__row-actions">
                 <button onClick={() => startEdit(item)}>Edit</button>

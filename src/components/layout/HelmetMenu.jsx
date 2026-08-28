@@ -1,4 +1,4 @@
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './HelmetMenu.css';
 
 const MENU_ITEMS = [
@@ -16,9 +16,9 @@ function HelmetMenu({ onClose }) {
         <i className="ti ti-x" aria-hidden="true" />
       </button>
       {MENU_ITEMS.map((item) => (
-        <a key={item.to} href={item.to} className="helmet-menu__item" onClick={onClose}>
+        <Link key={item.to} to={item.to} className="helmet-menu__item" onClick={onClose}>
           {item.label}
-        </a>
+        </Link>
       ))}
     </div>
   );

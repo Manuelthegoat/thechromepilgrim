@@ -14,7 +14,7 @@ function Gallery() {
         .from("gallery_items")
         .select("id, title, images")
         .eq("active", true)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: true });
 
       if (!error) setItems(data);
       setLoading(false);
